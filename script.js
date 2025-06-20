@@ -182,12 +182,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // Animation Helpers
     function animateProcessing(element) {
         element.classList.add('processing');
-        element.innerHTML = `<span class="spinner"></span>${element.textContent}`;
+        const originalText = element.textContent;
+        element.innerHTML = `<span class="spinner"></span>${originalText}`;
     }
 
     function animateSuccess(element) {
         element.classList.remove('processing');
-        element.innerHTML = element.textContent.replace('spinner', '');
+        element.innerHTML = element.textContent.replace('<span class="spinner"></span>', '');
         element.classList.add('success');
         
         // Create success particles
