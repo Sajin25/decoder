@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Existing variables
+    // DOM Elements
     const originalText = document.getElementById('originalText');
     const resultText = document.getElementById('resultText');
     const keyInput = document.getElementById('key');
@@ -7,10 +7,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const decodeBtn = document.getElementById('decodeBtn');
     const clearBtn = document.getElementById('clearBtn');
     const copyBtn = document.getElementById('copyBtn');
-
-    // ===== PARTICLE EFFECTS =====
     const particlesContainer = document.getElementById('particles-container');
-    const particleCount = 80;
+
+    // Color Palette
+    const colors = [
+        'rgba(138, 43, 226, 0.7)',    // Blue Violet
+        'rgba(0, 255, 255, 0.7)',     // Cyan
+        'rgba(255, 0, 255, 0.7)',     // Magenta
+        'rgba(100, 255, 200, 0.7)',   // Mint
+        'rgba(255, 100, 200, 0.7)'    // Pink
+    ];
+
+    // ===== PARTICLE SYSTEM =====
+    const particleCount = 150;
     
     // Create particles
     for (let i = 0; i < particleCount; i++) {
@@ -21,116 +30,103 @@ document.addEventListener('DOMContentLoaded', function() {
         const particle = document.createElement('div');
         particle.className = 'particle';
         
-        // Random size (small)
-        const size = Math.random() * 3 + 1;
+        // Random properties
+        const size = Math.random() * 6 + 2;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const initialX = Math.random() * 100;
+        const initialY = Math.random() * 100;
+        
+        // Apply styles
         particle.style.width = `${size}px`;
         particle.style.height = `${size}px`;
+        particle.style.backgroundColor = color;
+        particle.style.left = `${initialX}%`;
+        particle.style.top = `${initialY}%`;
+        particle.style.opacity = '0';
         
-        // Random color
-        const colors = ['rgba(52, 152, 219, 0.3)', 'rgba(155, 89, 182, 0.3)', 'rgba(46, 204, 113, 0.3)'];
-        particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        
-        // Initial position
-        resetParticle(particle);
+        // Animation properties
+        const duration = Math.random() * 15 + 10;
+        const delay = Math.random() * 5;
         
         particlesContainer.appendChild(particle);
         
-        // Animate
-        animateParticle(particle);
+        // Animate particle
+        animateParticle(particle, duration, delay);
     }
     
-    function resetParticle(particle) {
-        // Random position
-        const posX = Math.random() * 100;
-        const posY = Math.random() * 100;
-        
-        particle.style.left = `${posX}%`;
-        particle.style.top = `${posY}%`;
-        particle.style.opacity = '0';
-        
-        return {
-            x: posX,
-            y: posY
-        };
-    }
-    
-    function animateParticle(particle) {
-        // Initial position
-        const pos = resetParticle(particle);
-        
-        // Random animation properties
-        const duration = Math.random() * 10 + 10;
-        const delay = Math.random() * 5;
-        
-        // Animate with GSAP-like timing
+    function animateParticle(particle, duration, delay) {
         setTimeout(() => {
-            particle.style.transition = `all ${duration}s linear`;
-            particle.style.opacity = Math.random() * 0.3 + 0.1;
+            // Random movement
+            const moveX = (Math.random() * 100);
+            const moveY = (Math.random() * 100);
             
-            // Move in a slight direction
-            const moveX = pos.x + (Math.random() * 20 - 10);
-            const moveY = pos.y - Math.random() * 30; // Move upwards
-            
+            // Apply animation
+            particle.style.transition = `all ${duration}s cubic-bezier(0.1, 0.8, 0.2, 1)`;
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
             particle.style.left = `${moveX}%`;
             particle.style.top = `${moveY}%`;
             
-            // Reset after animation completes
+            // Restart animation when complete
             setTimeout(() => {
-                animateParticle(particle);
+                animateParticle(particle, duration, delay);
             }, duration * 1000);
         }, delay * 1000);
     }
     
-    // Mouse interaction
+    // Mouse interaction particles
     document.addEventListener('mousemove', (e) => {
-        // Create particles at mouse position
-        const mouseX = (e.clientX / window.innerWidth) * 100;
-        const mouseY = (e.clientY / window.innerHeight) * 100;
-        
-        // Create temporary particle
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        
-        // Small size
-        const size = Math.random() * 4 + 2;
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Position at mouse
-        particle.style.left = `${mouseX}%`;
-        particle.style.top = `${mouseY}%`;
-        particle.style.opacity = '0.6';
-        
-        particlesContainer.appendChild(particle);
-        
-        // Animate outward
-        setTimeout(() => {
-            particle.style.transition = 'all 2s ease-out';
-            particle.style.left = `${mouseX + (Math.random() * 10 - 5)}%`;
-            particle.style.top = `${mouseY + (Math.random() * 10 - 5)}%`;
-            particle.style.opacity = '0';
+        // Create sparkle particles
+        for (let i = 0; i < 3; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
             
-            // Remove after animation
+            // Position at mouse with slight offset
+            const offsetX = (Math.random() * 20 - 10);
+            const offsetY = (Math.random() * 20 - 10);
+            const mouseX = (e.clientX / window.innerWidth) * 100 + offsetX;
+            const mouseY = (e.clientY / window.innerHeight) * 100 + offsetY;
+            
+            // Random properties
+            const size = Math.random() * 4 + 2;
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // Apply styles
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.backgroundColor = color;
+            particle.style.left = `${mouseX}%`;
+            particle.style.top = `${mouseY}%`;
+            particle.style.opacity = '0.8';
+            particle.style.boxShadow = `0 0 ${size*2}px ${size}px ${color}`;
+            
+            particlesContainer.appendChild(particle);
+            
+            // Animate outward
             setTimeout(() => {
-                particle.remove();
-            }, 2000);
-        }, 10);
+                particle.style.transition = 'all 1s ease-out';
+                particle.style.opacity = '0';
+                particle.style.transform = `translate(${Math.random() * 40 - 20}px, ${Math.random() * 40 - 20}px) scale(0.5)`;
+                
+                // Remove after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }, 10);
+        }
     });
 
     // ===== ENCODE/DECODE FUNCTIONS =====
     function encode(text, key) {
         if (!text) {
-            originalText.classList.add('pulse');
-            setTimeout(() => originalText.classList.remove('pulse'), 1000);
+            animateError(originalText);
             return '';
         }
         if (!key) {
-            keyInput.classList.add('pulse');
-            setTimeout(() => keyInput.classList.remove('pulse'), 1000);
+            animateError(keyInput);
             return '';
         }
         
-        encodeBtn.classList.add('processing');
+        animateProcessing(encodeBtn);
         
         return new Promise(resolve => {
             setTimeout(() => {
@@ -142,10 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     encoded += String.fromCharCode(encodedChar);
                 }
                 
-                encodeBtn.classList.remove('processing');
-                encodeBtn.classList.add('success');
-                setTimeout(() => encodeBtn.classList.remove('success'), 1000);
-                
+                animateSuccess(encodeBtn);
                 resolve(btoa(encoded));
             }, 800);
         });
@@ -153,17 +146,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function decode(encodedText, key) {
         if (!encodedText) {
-            originalText.classList.add('pulse');
-            setTimeout(() => originalText.classList.remove('pulse'), 1000);
+            animateError(originalText);
             return '';
         }
         if (!key) {
-            keyInput.classList.add('pulse');
-            setTimeout(() => keyInput.classList.remove('pulse'), 1000);
+            animateError(keyInput);
             return '';
         }
         
-        decodeBtn.classList.add('processing');
+        animateProcessing(decodeBtn);
         
         return new Promise(resolve => {
             setTimeout(() => {
@@ -178,23 +169,92 @@ document.addEventListener('DOMContentLoaded', function() {
                         decoded += String.fromCharCode(decodedChar);
                     }
                     
-                    decodeBtn.classList.remove('processing');
-                    decodeBtn.classList.add('success');
-                    setTimeout(() => decodeBtn.classList.remove('success'), 1000);
-                    
+                    animateSuccess(decodeBtn);
                     resolve(decoded);
                 } catch (e) {
-                    decodeBtn.classList.remove('processing');
-                    decodeBtn.classList.add('error');
-                    setTimeout(() => decodeBtn.classList.remove('error'), 1000);
-                    
+                    animateError(decodeBtn);
                     resolve('Invalid encoded text or wrong key!');
                 }
             }, 800);
         });
     }
 
-    // Event listeners
+    // Animation Helpers
+    function animateProcessing(element) {
+        element.classList.add('processing');
+        element.innerHTML = `<span class="spinner"></span>${element.textContent}`;
+    }
+
+    function animateSuccess(element) {
+        element.classList.remove('processing');
+        element.innerHTML = element.textContent.replace('spinner', '');
+        element.classList.add('success');
+        
+        // Create success particles
+        const rect = element.getBoundingClientRect();
+        for (let i = 0; i < 10; i++) {
+            createConfetti(rect.left + rect.width/2, rect.top);
+        }
+        
+        setTimeout(() => {
+            element.classList.remove('success');
+        }, 1000);
+    }
+
+    function animateError(element) {
+        element.classList.add('error-pulse');
+        setTimeout(() => {
+            element.classList.remove('error-pulse');
+        }, 1000);
+    }
+
+    function createConfetti(x, y) {
+        const confetti = document.createElement('div');
+        confetti.className = 'particle';
+        
+        const size = Math.random() * 8 + 4;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        
+        confetti.style.width = `${size}px`;
+        confetti.style.height = `${size}px`;
+        confetti.style.backgroundColor = color;
+        confetti.style.left = `${(x/window.innerWidth)*100}%`;
+        confetti.style.top = `${(y/window.innerHeight)*100}%`;
+        confetti.style.opacity = '1';
+        confetti.style.boxShadow = `0 0 ${size*2}px ${size}px ${color}`;
+        
+        particlesContainer.appendChild(confetti);
+        
+        // Animate
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 10 + 5;
+        const rotation = Math.random() * 360;
+        
+        let posX = (x/window.innerWidth)*100;
+        let posY = (y/window.innerHeight)*100;
+        let frame = 0;
+        
+        const animate = () => {
+            frame++;
+            posX += Math.cos(angle) * 0.2;
+            posY += Math.sin(angle) * 0.2 + frame * 0.1;
+            
+            confetti.style.left = `${posX}%`;
+            confetti.style.top = `${posY}%`;
+            confetti.style.transform = `rotate(${rotation + frame*2}deg)`;
+            confetti.style.opacity = `${1 - frame/60}`;
+            
+            if (frame < 60) {
+                requestAnimationFrame(animate);
+            } else {
+                confetti.remove();
+            }
+        };
+        
+        requestAnimationFrame(animate);
+    }
+
+    // Event Listeners
     encodeBtn.addEventListener('click', async function() {
         const encoded = await encode(originalText.value, keyInput.value);
         resultText.value = encoded;
@@ -206,36 +266,34 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     clearBtn.addEventListener('click', function() {
-        clearBtn.classList.add('clearing');
+        animateProcessing(clearBtn);
         setTimeout(() => {
             originalText.value = '';
             resultText.value = '';
             keyInput.value = '';
-            clearBtn.classList.remove('clearing');
+            animateSuccess(clearBtn);
         }, 300);
     });
 
     copyBtn.addEventListener('click', function() {
         if (!resultText.value) {
-            copyBtn.classList.add('pulse');
-            setTimeout(() => copyBtn.classList.remove('pulse'), 1000);
+            animateError(copyBtn);
             return;
         }
         
         resultText.select();
         document.execCommand('copy');
         
-        copyBtn.classList.add('copied');
-        setTimeout(() => copyBtn.classList.remove('copied'), 500);
-        
+        animateSuccess(copyBtn);
         const originalText = copyBtn.textContent;
         copyBtn.textContent = '✓ Copied!';
+        
         setTimeout(() => {
             copyBtn.textContent = originalText;
         }, 2000);
     });
 
-    // Keyboard shortcuts
+    // Keyboard Shortcuts
     originalText.addEventListener('keydown', function(e) {
         if (e.ctrlKey && e.key === 'Enter') {
             encodeBtn.click();
@@ -246,14 +304,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Button hover effects
+    // Button Hover Effects
     const buttons = document.querySelectorAll('.btn');
     buttons.forEach(button => {
         button.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-3px)';
+            this.style.boxShadow = `0 6px 25px ${this.style.backgroundColor}`;
         });
+        
         button.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0)';
+            this.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
         });
     });
 });
