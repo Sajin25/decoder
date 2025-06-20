@@ -253,6 +253,28 @@ body {
     animation: pulse 1s;
 }
 
+/* Copyright Footer */
+.copyright-footer {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: #7f8c8d;
+    font-size: 0.9em;
+    opacity: 0;
+    animation: fadeIn 0.8s 1s ease-out forwards;
+    transition: all 0.3s ease;
+}
+
+.copyright-footer:hover {
+    color: #3498db;
+    transform: scale(1.02);
+}
+
+.copyright-footer strong {
+    color: #2c3e50;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .tool-container {
