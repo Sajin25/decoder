@@ -8,31 +8,31 @@
 </head>
 <body>
     <div class="container">
-        <h1>Text Encoder/Decoder</h1>
+        <h1 class="title-animate">Text Encoder/Decoder</h1>
         
         <div class="tool-container">
             <div class="input-section">
-                <label for="originalText">Original Text:</label>
-                <textarea id="originalText" placeholder="Enter text to encode or paste encoded text to decode"></textarea>
+                <label for="originalText" class="label-float">Original Text:</label>
+                <textarea id="originalText" class="text-area-animate" placeholder="Enter text to encode or paste encoded text to decode"></textarea>
                 
-                <label for="key">Key:</label>
-                <input type="text" id="key" placeholder="Enter your secret key">
+                <label for="key" class="label-float">Key:</label>
+                <input type="text" id="key" class="input-animate" placeholder="Enter your secret key">
                 
                 <div class="buttons">
-                    <button id="encodeBtn">Encode</button>
-                    <button id="decodeBtn">Decode</button>
-                    <button id="clearBtn">Clear All</button>
+                    <button id="encodeBtn" class="btn btn-encode">Encode</button>
+                    <button id="decodeBtn" class="btn btn-decode">Decode</button>
+                    <button id="clearBtn" class="btn btn-clear">Clear All</button>
                 </div>
             </div>
             
             <div class="output-section">
-                <label for="resultText">Result:</label>
-                <textarea id="resultText" readonly></textarea>
-                <button id="copyBtn">Copy to Clipboard</button>
+                <label for="resultText" class="label-float">Result:</label>
+                <textarea id="resultText" class="text-area-animate" readonly></textarea>
+                <button id="copyBtn" class="btn btn-copy">Copy to Clipboard</button>
             </div>
         </div>
         
-        <div class="instructions">
+        <div class="instructions slide-in">
             <h3>How to use:</h3>
             <ol>
                 <li>Enter your text in the "Original Text" box</li>
